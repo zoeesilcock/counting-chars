@@ -1,3 +1,4 @@
+use std::cmp::Reverse;
 use std::collections::HashMap;
 use std::process;
 
@@ -22,7 +23,7 @@ fn main() {
     }
 
     let mut result: Vec<CharStats> = all_char_stats.into_values().collect();
-    result.sort_by(|a, b| b.count.cmp(&a.count));
+    result.sort_unstable_by_key(|item| (Reverse(item.count), item.character));
 
     println!("{:?}", result);
 }
