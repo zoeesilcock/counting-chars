@@ -1,5 +1,6 @@
 use std::fmt;
 
+#[derive(Clone)]
 pub struct SubsequentCharStats {
     pub character: char,
     pub count: u32,

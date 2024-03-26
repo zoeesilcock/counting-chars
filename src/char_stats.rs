@@ -3,6 +3,7 @@ use std::fmt;
 
 use crate::subsequent_char_stats::SubsequentCharStats;
 
+#[derive(Clone)]
 pub struct CharStats {
     pub character: char,
     pub count: u32,
