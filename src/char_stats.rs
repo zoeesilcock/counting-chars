@@ -1,13 +1,12 @@
-use std::collections::HashMap;
 use std::fmt;
 
-use crate::subsequent_char_stats::SubsequentCharStats;
+use crate::subsequent_chars::SubsequentChars;
 
 #[derive(Clone)]
 pub struct CharStats {
     pub character: char,
     pub count: u32,
-    pub subsequent_characters: HashMap<char, SubsequentCharStats>,
+    pub subsequent_characters: SubsequentChars,
 }
 
 impl CharStats {
@@ -15,7 +14,7 @@ impl CharStats {
         CharStats {
             character,
             count: 0,
-            subsequent_characters: HashMap::new(),
+            subsequent_characters: SubsequentChars::new(),
         }
     }
 }
@@ -25,7 +24,9 @@ impl fmt::Debug for CharStats {
         write!(
             f,
             "{:?}: {}, subsequent: {:?}\n",
-            self.character, self.count, self.subsequent_characters
+            self.character,
+            self.count,
+            self.subsequent_characters.get_result()
         )
     }
 }

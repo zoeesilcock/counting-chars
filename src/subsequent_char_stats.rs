@@ -17,6 +17,6 @@ impl SubsequentCharStats {
 
 impl fmt::Debug for SubsequentCharStats {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.count)
+        write!(f, "{:?}: {}", self.character, self.count)
     }
 }

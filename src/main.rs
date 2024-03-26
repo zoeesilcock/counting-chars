@@ -5,6 +5,7 @@ use crate::all_chars::AllChars;
 mod all_chars;
 mod char_stats;
 mod subsequent_char_stats;
+mod subsequent_chars;
 
 fn main() {
     let input = std::fs::read_to_string("example1.txt").unwrap_or_else(|err| {

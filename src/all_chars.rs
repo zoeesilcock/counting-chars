@@ -2,7 +2,6 @@ use std::cmp::Reverse;
 use std::collections::HashMap;
 
 use crate::char_stats::CharStats;
-use crate::subsequent_char_stats::SubsequentCharStats;
 
 pub struct AllChars {
     pub characters: HashMap<char, CharStats>,
@@ -24,14 +23,7 @@ impl AllChars {
         entry.count += 1;
 
         match subsequent_character {
-            Some(c) => {
-                let subsequent_entry = entry
-                    .subsequent_characters
-                    .entry(c)
-                    .or_insert(SubsequentCharStats::new(c));
-
-                subsequent_entry.count += 1;
-            }
+            Some(c) => entry.subsequent_characters.add_character(c),
             None => (),
         }
     }
