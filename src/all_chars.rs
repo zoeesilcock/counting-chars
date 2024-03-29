@@ -1,5 +1,6 @@
 use std::cmp::Reverse;
 use std::collections::HashMap;
+use std::fmt::Write;
 
 use crate::char_stats::CharStats;
 
@@ -28,9 +29,21 @@ impl AllChars {
         }
     }
 
-    pub fn get_result(&self) -> Vec<CharStats> {
-        let mut result: Vec<CharStats> = self.characters.values().cloned().collect();
-        result.sort_unstable_by_key(|item| (Reverse(item.count), item.character));
-        return result;
+    pub fn get_result(&self) -> Result<String, Box<dyn std::error::Error>> {
+        let mut result = String::new();
+        let mut character_list: Vec<CharStats> = self.characters.values().cloned().collect();
+        character_list.sort_unstable_by_key(|item| (Reverse(item.count), item.character));
+
+        for item in character_list {
+            write!(
+                result,
+                "{:?}: {}, subsequent: [{}]\n",
+                item.character,
+                item.count,
+                item.subsequent_characters.get_result()?
+            )?;
+        }
+
+        return Ok(result);
     }
 }

@@ -31,6 +31,8 @@ fn main() {
         all_chars.add_character(character, subsequent_character);
     }
 
-    let result = all_chars.get_result();
-    println!("{:?}", result);
+    match all_chars.get_result() {
+        Ok(result) => println!("{}", result),
+        Err(error) => println!("Failed to generate result: {}", error),
+    }
 }
