@@ -1,17 +1,20 @@
 use std::cmp::Reverse;
 use std::collections::HashMap;
 use std::fmt::Write;
+use std::time::SystemTime;
 
 use crate::char_stats::CharStats;
 
 pub struct AllChars {
     pub characters: HashMap<char, CharStats>,
+    pub total_count: u32,
 }
 
 impl AllChars {
     pub fn new() -> AllChars {
         AllChars {
             characters: HashMap::new(),
+            total_count: 0,
         }
     }
 
@@ -22,6 +25,7 @@ impl AllChars {
             .or_insert(CharStats::new(character));
 
         entry.count += 1;
+        self.total_count += 1;
 
         match subsequent_character {
             Some(c) => entry.subsequent_characters.add_character(c),
@@ -33,6 +37,8 @@ impl AllChars {
         let mut result = String::new();
         let mut character_list: Vec<CharStats> = self.characters.values().cloned().collect();
         character_list.sort_unstable_by_key(|item| (Reverse(item.count), item.character));
+
+        write!(result, "Total character count: {}\n", self.total_count)?;
 
         for item in character_list {
             write!(
