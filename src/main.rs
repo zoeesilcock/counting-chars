@@ -1,4 +1,5 @@
 use std::process;
+use std::time::SystemTime;
 
 use crate::all_chars::AllChars;
 
@@ -17,6 +18,8 @@ fn main() {
     let characters: Vec<char> = input.chars().collect();
     let character_count = characters.len();
 
+    all_chars.start_time = Some(SystemTime::now());
+
     for i in 0..character_count {
         // Count this character.
         let character = characters[i];
@@ -30,6 +33,8 @@ fn main() {
 
         all_chars.add_character(character, subsequent_character);
     }
+
+    all_chars.end_time = Some(SystemTime::now());
 
     match all_chars.get_result() {
         Ok(result) => println!("{}", result),

@@ -8,6 +8,8 @@ use crate::char_stats::CharStats;
 pub struct AllChars {
     pub characters: HashMap<char, CharStats>,
     pub total_count: u32,
+    pub start_time: Option<SystemTime>,
+    pub end_time: Option<SystemTime>,
 }
 
 impl AllChars {
@@ -15,6 +17,8 @@ impl AllChars {
         AllChars {
             characters: HashMap::new(),
             total_count: 0,
+            start_time: None,
+            end_time: None,
         }
     }
 
@@ -39,6 +43,14 @@ impl AllChars {
         character_list.sort_unstable_by_key(|item| (Reverse(item.count), item.character));
 
         write!(result, "Total character count: {}\n", self.total_count)?;
+
+        match (self.start_time, self.end_time) {
+            (Some(start), Some(end)) => match end.duration_since(start) {
+                Ok(duration) => write!(result, "Time elapsed: {:?}\n", duration)?,
+                Err(error) => write!(result, "Failed to calculate elapsed time: {}\n", error)?,
+            },
+            _ => write!(result, "Start and/or end time missing.\n")?,
+        }
 
         for item in character_list {
             write!(
