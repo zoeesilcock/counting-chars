@@ -9,7 +9,7 @@ mod subsequent_char_stats;
 mod subsequent_chars;
 
 fn main() {
-    let input = std::fs::read_to_string("example1.txt").unwrap_or_else(|err| {
+    let input = std::fs::read_to_string("example2.txt").unwrap_or_else(|err| {
         eprintln!("Problem reading input file: {err}");
         process::exit(1);
     });
