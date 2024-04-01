@@ -1,3 +1,4 @@
+use std::env;
 use std::process;
 use std::time::SystemTime;
 
@@ -9,7 +10,18 @@ mod subsequent_char_stats;
 mod subsequent_chars;
 
 fn main() {
-    let input = std::fs::read_to_string("example2.txt").unwrap_or_else(|err| {
+    let mut args = env::args();
+
+    // Skip the command name.
+    args.next();
+
+    // Extract the provided file path.
+    let file_path = args.next().unwrap_or_else(|| {
+        eprintln!("No file path provided.");
+        process::exit(1);
+    });
+
+    let input = std::fs::read_to_string(file_path).unwrap_or_else(|err| {
         eprintln!("Problem reading input file: {err}");
         process::exit(1);
     });
