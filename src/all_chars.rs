@@ -22,6 +22,27 @@ impl AllChars {
         }
     }
 
+    pub fn count(&mut self, input_characters: Vec<char>) {
+        let character_count = input_characters.len();
+        self.start_time = Some(SystemTime::now());
+
+        for i in 0..character_count {
+            // Count this character.
+            let character = input_characters[i];
+            let mut subsequent_character: Option<char> = None;
+
+            // Count the subsequent character.
+            let next_index = i + 1;
+            if next_index < character_count {
+                subsequent_character = Some(input_characters[next_index]);
+            }
+
+            self.add_character(character, subsequent_character);
+        }
+
+        self.end_time = Some(SystemTime::now());
+    }
+
     pub fn add_character(&mut self, character: char, subsequent_character: Option<char>) {
         let entry = self
             .characters
