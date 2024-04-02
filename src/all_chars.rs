@@ -10,15 +10,17 @@ pub struct AllChars {
     pub total_count: u32,
     pub start_time: Option<SystemTime>,
     pub end_time: Option<SystemTime>,
+    pub ignore_case: bool,
 }
 
 impl AllChars {
-    pub fn new() -> AllChars {
+    pub fn new(ignore_case: bool) -> AllChars {
         AllChars {
             characters: HashMap::new(),
             total_count: 0,
             start_time: None,
             end_time: None,
+            ignore_case,
         }
     }
 
@@ -44,6 +46,11 @@ impl AllChars {
     }
 
     pub fn add_character(&mut self, character: char, subsequent_character: Option<char>) {
+        let character = match self.ignore_case {
+            true => character.to_lowercase().next().unwrap(),
+            false => character,
+        };
+
         let entry = self
             .characters
             .entry(character)
@@ -53,7 +60,16 @@ impl AllChars {
         self.total_count += 1;
 
         match subsequent_character {
-            Some(c) => entry.subsequent_characters.add_character(c),
+            Some(c) => {
+                let subsequent_character = match self.ignore_case {
+                    true => c.to_lowercase().next().unwrap(),
+                    false => c,
+                };
+
+                entry
+                    .subsequent_characters
+                    .add_character(subsequent_character);
+            }
             None => (),
         }
     }

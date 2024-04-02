@@ -14,20 +14,30 @@ fn main() {
     // Skip the command name.
     args.next();
 
-    // Extract the provided file path.
-    let file_path = args.next().unwrap_or_else(|| {
-        eprintln!("No file path provided.");
-        process::exit(1);
-    });
+    let mut file_path = String::new();
+    let mut ignore_case = false;
 
+    // Extract CLI arguments.
+    while let Some(arg) = args.next() {
+        match arg {
+            arg if arg == "-i" || arg == "--ignore-case" => {
+                ignore_case = true;
+            }
+            arg => file_path = arg,
+        }
+    }
+
+    // Read the input file.
     let input = std::fs::read_to_string(file_path).unwrap_or_else(|err| {
         eprintln!("Problem reading input file: {err}");
         process::exit(1);
     });
 
-    let mut all_chars = AllChars::new();
+    // Count the characters.
+    let mut all_chars = AllChars::new(ignore_case);
     all_chars.count(input.chars().collect());
 
+    // Output the results.
     match all_chars.get_result() {
         Ok(result) => println!("{}", result),
         Err(error) => println!("Failed to generate result: {}", error),
